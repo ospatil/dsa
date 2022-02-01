@@ -1,0 +1,6 @@
+---
+main:
+  - name: Analysis
+    sub:
+      - name: "Linear"
+        ref: "/analysis"

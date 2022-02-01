@@ -1,0 +1,29 @@
+{
+  "name": "dsa",
+  "version": "1.0.0",
+  "description": "Data structures and algorithms",
+  "type": "module",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "test": "pnpm run lint && ava",
+    "lint": "xo --fix --prettier",
+    "hugo:dev": "cd docs && hugo server -D"
+  },
+  "keywords": [
+    "data-structures",
+    "algorithms"
+  ],
+  "author": "Omkar Patil",
+  "license": "MIT",
+  "volta": {
+    "node": "17.4.0"
+  },
+  "engines": {
+    "node": ">=17",
+    "pnpm": ">=6"
+  },
+  "dependencies": {
+    "ava": "^4.0.1",
+    "xo": "^0.47.0"
+  }
+}
