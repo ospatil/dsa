@@ -25,5 +25,6 @@
   "dependencies": {
     "ava": "^4.0.1",
     "xo": "^0.47.0"
-  }
+  },
+  "private": "true"
 }

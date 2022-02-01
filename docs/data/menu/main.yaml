@@ -2,5 +2,5 @@
 main:
   - name: Analysis
     sub:
-      - name: "Linear"
-        ref: "/analysis"
+      - name: "Asymptotic Notation"
+        ref: "/notation"
