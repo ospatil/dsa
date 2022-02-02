@@ -4,3 +4,7 @@ main:
     sub:
       - name: "Asymptotic Notation"
         ref: "/notation"
+      - name: "Common Loops"
+        ref: "/common-loops"
+      - name: "Recursion"
+        ref: "/recursion"
