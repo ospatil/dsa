@@ -7,7 +7,7 @@
     "preinstall": "npx only-allow pnpm",
     "test": "pnpm run lint && ava",
     "lint": "xo --fix --prettier",
-    "hugo:dev": "cd docs && hugo server -D"
+    "hugo:dev": "cd docs && hugo server -D --baseURL http://localhost/"
   },
   "keywords": [
     "data-structures",

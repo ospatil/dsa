@@ -1,5 +1,6 @@
 +++
 title = 'Asymptotic Notation'
+weight = 10
 +++
 
 {{< toc >}}
