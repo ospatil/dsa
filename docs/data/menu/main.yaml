@@ -8,3 +8,5 @@ main:
         ref: "/common-loops"
       - name: "Recursion"
         ref: "/recursion"
+      - name: "Space Complexity"
+        ref: "/space-complexity"
