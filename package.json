@@ -7,6 +7,7 @@
     "preinstall": "npx only-allow pnpm",
     "test": "pnpm run lint && ava",
     "lint": "xo --fix --prettier",
+    "run-file": "node --loader ts-node/esm --",
     "hugo:dev": "cd docs && hugo server -D --baseURL http://localhost/"
   },
   "keywords": [
@@ -22,9 +23,15 @@
     "node": ">=17",
     "pnpm": ">=6"
   },
-  "dependencies": {
+  "private": "true",
+  "devDependencies": {
+    "@types/node": "17",
     "ava": "^4.0.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.5",
     "xo": "^0.47.0"
   },
-  "private": "true"
+  "xo": {
+    "capitalized-comments": ["error", "never"]
+  }
 }
