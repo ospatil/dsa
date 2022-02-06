@@ -32,6 +32,8 @@
     "xo": "^0.47.0"
   },
   "xo": {
-    "capitalized-comments": ["error", "never"]
+    "rules": {
+      "capitalized-comments": ["error", "never"]
+    }
   }
 }
