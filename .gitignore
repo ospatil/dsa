@@ -231,8 +231,7 @@ yarn-error.log
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 
 ### Hugo ###
-# Ignore themes folder
-docs/themes/
+# Ignore only the subfolders of the themes folder but add docs/themes
 docs/public/
 docs/resources/_gen/
 docs/assets/jsconfig.json
