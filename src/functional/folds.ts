@@ -34,8 +34,23 @@ assert.equal(sumFoldl([1, 2, 3]), 6);
 const productFoldl = (xs: number[]) => foldl((x, acc) => x * acc, 1, xs);
 assert.equal(productFoldl([2, 2, 3]), 12);
 
-/* pipe and compose */
+/* let's implement a couple of JavaScript standard apis using folds: map, reduce, not exact but close enough. */
+// map - the reason for two type parameters is the returned array can be of any type.
+const map = <A, B>(xs: A[], cb: (x: A) => B): B[] => foldl((x, acc) => {
+	acc.push(cb(x));
+	return acc;
+}, [] as B[], xs);
 
+assert.deepEqual(map([1, 2, 3], x => x * 2), [2, 4, 6]);
+// to demonstrate usage of return array containing different type
+assert.deepEqual(map([1, 2, 3], _x => 'ho'), ['ho', 'ho', 'ho']);
+
+// reduce
+const reduce = <A>([h, ...t]: A[], cb: (pre: A, cur: A) => A) => foldl((x, acc) => cb(x, acc), h, t);
+
+assert.deepEqual(reduce([7, 3, 8], (pre, cur) => pre + cur), 18);
+
+/* pipe and compose */
 /* define type for identity */
 type IdType<A> = (x: A) => A;
 
@@ -80,22 +95,6 @@ const fiveTimes = (x: number) => x * 5;
 const composition = compose([plusOne, fiveTimes]);
 // this is equivalent to addOne(multiplyByFive(10)) === 51
 assert.equal(composition(10), plusOne(fiveTimes(10)));
-
-/* let's implement a couple of JavaScript standard apis using folds: map, reduce, not exact but close enough. */
-// map - the reason for two type parameters is the returned array can be of any type.
-const map = <A, B>(xs: A[], cb: (x: A) => B): B[] => foldl((x, acc) => {
-	acc.push(cb(x));
-	return acc;
-}, [] as B[], xs);
-
-assert.deepEqual(map([1, 2, 3], x => x * 2), [2, 4, 6]);
-// to demonstrate usage of return array containing different type
-assert.deepEqual(map([1, 2, 3], _x => 'yo'), ['yo', 'yo', 'yo']);
-
-// reduce
-const reduce = <A>([h, ...t]: A[], cb: (pre: A, cur: A) => A) => foldl((x, acc) => cb(x, acc), h, t);
-
-assert.deepEqual(reduce([7, 3, 8], (pre, cur) => pre + cur), 18);
 
 /* now comes the difficult part - foldl and foldr in terms of each other */
 const foldlR = <A, B>(f: (x: A, acc: B) => B, init: B, xs: A[]) => foldr(
