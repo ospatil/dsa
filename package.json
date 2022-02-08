@@ -33,7 +33,8 @@
   },
   "xo": {
     "rules": {
-      "capitalized-comments": ["error", "never"]
+      "capitalized-comments": ["error", "never"],
+      "unicorn/prevent-abbreviations": "off"
     }
   }
 }

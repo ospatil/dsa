@@ -97,10 +97,10 @@ const composition = compose([plusOne, fiveTimes]);
 assert.equal(composition(10), plusOne(fiveTimes(10)));
 
 /* now comes the difficult part - foldl and foldr in terms of each other */
-const foldlR = <A, B>(f: (x: A, acc: B) => B, init: B, xs: A[]) => foldr(
-	(fn, acc) => x => acc(f(fn, x)),
+const foldlR = <A, B>(f: (x: A, acc: B) => B, init: B, elems: A[]) => foldr(
+	(e, acc) => x => acc(f(e, x)), // e is the element from the elems array
 	(b: B) => b,
-	xs,
+	elems,
 )(init);
 
 // foldl usage - ((((0 * 10 + 1) * 10 + 2) * 10 + 3) * 10 + 4)
@@ -111,10 +111,10 @@ assert.equal(digitsToSum([2, 3, 4, 5]), 2345);
 const digitsToSumFoldlR = (xs: number[]) => foldlR(digitSumOp, 0, xs);
 assert.equal(digitsToSumFoldlR([2, 3, 4, 5]), 2345);
 
-const foldrL = <A, B>(f: (x: A, acc: B) => B, init: B, xs: A[]) => foldl(
-	(fn, acc) => x => acc(f(fn, x)),
+const foldrL = <A, B>(f: (x: A, acc: B) => B, init: B, elems: A[]) => foldl(
+	(e, acc) => x => acc(f(e, x)), // e is the element from the elems array
 	(b: B) => b,
-	xs,
+	elems,
 )(init);
 
 // foldr usage - (16 / (8 / (4/2)))
