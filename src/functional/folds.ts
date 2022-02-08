@@ -54,27 +54,27 @@ assert.deepEqual(reduce([7, 3, 8], (pre, cur) => pre + cur), 18);
 /* define type for identity */
 type IdType<A> = (x: A) => A;
 
-/* pipe using loop */
 const double = (i: number) => i * 2;
 const triple = (i: number) => i * 3;
 const quadruple = (i: number) => i * 4;
 
 const fns = [double, triple, quadruple];
-const idNumber: IdType<number> = x => x;
 
 const plumber = <A>(fn1: IdType<A>, fn2: IdType<A>) => (x: A) => fn2(fn1(x));
 
 // since plumber needs two functions to form the pipeline, we need something to start with the
-// first function in the arraya dn that something is the id function.
+// first function in the array and that something is the id function.
+const idNumber: IdType<number> = x => x; // id function for number type
+
 let acc = idNumber;
 
 for (const fn of fns) {
 	acc = plumber(acc, fn);
 }
 
-assert.equal(acc(1), 24);
+assert.equal(acc(1), 24); // acc is the final pipe function
 
-// pipe([f1, f2, f3]) = f3(f2((f1(x))))
+// pipe([f1, f2, f3])(x) = f3(f2((f1(x))))
 const pipe = <A>(fns: Array<IdType<A>>) => foldl((fn, acc) => x => acc(fn(x)), (x: A) => x, fns);
 
 const half = (x: number) => x / 2;
@@ -85,7 +85,7 @@ const pipeline = pipe([half, third, tenTimes]);
 // this is equivalent to tenTimes(third(half(24))) === 40
 assert.equal(pipeline(24), tenTimes(third(half(24))));
 
-/* compose: Compose([f1, f2, f3]) = f1(f2((f3(x)))) */
+/* compose: compose([f1, f2, f3])(x) = f1(f2((f3(x)))) */
 const compose = <A>(fns: Array<IdType<A>>) => foldr((fn, acc) => x => fn(acc(x)), (x: A) => x, fns);
 
 const plusOne: IdType<number> = x => x + 1;
@@ -93,7 +93,7 @@ const plusOne: IdType<number> = x => x + 1;
 const fiveTimes = (x: number) => x * 5;
 
 const composition = compose([plusOne, fiveTimes]);
-// this is equivalent to addOne(multiplyByFive(10)) === 51
+// this is equivalent to plusOne(fiveTimes(10)) === 51
 assert.equal(composition(10), plusOne(fiveTimes(10)));
 
 /* now comes the difficult part - foldl and foldr in terms of each other */
