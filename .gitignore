@@ -239,3 +239,6 @@ docs/hugo_stats.json
 
 # Temporary lock file while building
 docs/.hugo_build.lock
+
+# Local Netlify folder
+.netlify

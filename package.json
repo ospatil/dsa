@@ -7,7 +7,7 @@
     "preinstall": "npx only-allow pnpm",
     "test": "pnpm run lint && ava",
     "lint": "xo --fix --prettier",
-    "run-file": "node --loader ts-node/esm --",
+    "file": "node --loader ts-node/esm --",
     "hugo:dev": "cd docs && hugo server -D --baseURL http://localhost/"
   },
   "keywords": [
@@ -27,14 +27,36 @@
   "devDependencies": {
     "@types/node": "17",
     "ava": "^4.0.1",
+    "prettier": "^0.0.1",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.5",
     "xo": "^0.47.0"
   },
+  "prettier": {
+    "singleQuote": true
+  },
   "xo": {
+    "extends": [
+      "prettier"
+    ],
+    "ignore": [
+      "node_modules/**/*.*"
+    ],
     "rules": {
-      "capitalized-comments": ["error", "never"],
-      "unicorn/prevent-abbreviations": "off"
+      "capitalized-comments": [
+        "error",
+        "never"
+      ],
+      "unicorn/prevent-abbreviations": "off",
+      "unicorn/no-array-push-push": [
+        "error",
+        {
+          "ignore": [
+            "readable",
+            "stream"
+          ]
+        }
+      ]
     }
   }
 }
