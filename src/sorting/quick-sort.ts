@@ -143,6 +143,7 @@ Implementation notes:
 	We keep moving j to left till elements are greater than pivot. We stop at the first element that is less than or equal to pivot.
 	We swap the elements and carry on.
 	We stop the iteration when i becomes >= j. That means there are no elements in wrong position.
+	In each iteration, we make sure that elements from l to i are <= pivot while elements from j to h are >= pivot.
 */
 
 function partitionHoare(a: number[], l: number, h: number) {
@@ -172,8 +173,8 @@ function quickSortHoare(a: number[], l: number, h: number) {
 	if (l < h) { // make sure there are at least 2 elements in the array to start with
 		const p = partitionHoare(a, l, h); // this is the index that separates two parts in the array
 		// the following is the only difference between Lomuto and Hoare schemes
-		// in Lomuto, pivot has fixed position and returns the index of it, so we'll have to limit the sort to p-1
-		// in Hoare, the returned index forms the boundary and therefore we have to go upto p
+		// in Lomuto, we are fixing the position of the pivot and return that index, so we'll have to limit the sort to p-1
+		// in Hoare, the returned index forms the boundary (i.e. the pivot is not actually moved to it's correct position) and therefore we have to go upto p
 		quickSortHoare(a, l, p); // recursively sort the left part before pivot
 		quickSortHoare(a, p + 1, h); // recursively sort the left part after pivot
 	}
