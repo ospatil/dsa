@@ -2,13 +2,13 @@ import assert from 'node:assert/strict';
 
 type Node = {
 	data: number;
-	next: NullableNodeRef;
+	next: NodeRef;
 };
 
-type NullableNodeRef = Node | null;
+type NodeRef = Node | null;
 
-function toArray(head: NullableNodeRef) {
-	const arr: unknown[] = [];
+function toArray(head: NodeRef) {
+	const arr: number[] = [];
 	let curr = head;
 	while (curr) {
 		arr.push(curr.data);
@@ -25,12 +25,12 @@ function testToArray() {
 
 testToArray();
 
-function insertBegin(head: NullableNodeRef, data: number): Node {
+function insertBegin(head: NodeRef, data: number): Node {
 	return { data, next: head };
 }
 
 function testInsertBegin() {
-	let head: NullableNodeRef = null;
+	let head: NodeRef = null;
 	head = insertBegin(head, 10);
 	head = insertBegin(head, 20);
 	head = insertBegin(head, 30);
@@ -39,7 +39,7 @@ function testInsertBegin() {
 
 testInsertBegin();
 
-function insertEnd(head: NullableNodeRef, data: number): Node {
+function insertEnd(head: NodeRef, data: number): Node {
 	if (!head) {
 		return { data, next: null }
 	}
@@ -105,7 +105,7 @@ function testInsertPos() {
 
 testInsertPos();
 
-function deleteFirst(head: NullableNodeRef): NullableNodeRef {
+function deleteFirst(head: NodeRef): NodeRef {
 	// if head is present, return next which will become new head, else return head (undefined or null)
 	return head ? head.next : head;
 }
@@ -122,7 +122,7 @@ function testDeleteFirst() {
 
 testDeleteFirst();
 
-function deleteLast(head: NullableNodeRef) {
+function deleteLast(head: NodeRef) {
 	// if head is null or only one node, set head to null
 	if (!head || !head.next) {
 		return null;
@@ -139,7 +139,7 @@ function deleteLast(head: NullableNodeRef) {
 }
 
 function testDeleteLast() {
-	let head: NullableNodeRef = { data: 1, next: { data: 2, next: { data: 3, next: null } } };
+	let head: NodeRef = { data: 1, next: { data: 2, next: { data: 3, next: null } } };
 	head = deleteLast(head)!;
 	assert.deepEqual(toArray(head), [1, 2]);
 
@@ -153,7 +153,7 @@ function testDeleteLast() {
 testDeleteLast();
 
 
-function search(head: NullableNodeRef, data: unknown): number {
+function search(head: NodeRef, data: unknown): number {
 	let pos = 1;
 	let curr = head;
 	while (curr) {
@@ -176,7 +176,7 @@ function testSearch() {
 
 testSearch();
 
-function sortedInsert(head: NullableNodeRef, data: number): Node {
+function sortedInsert(head: NodeRef, data: number): Node {
 	const newNode: Node = { data, next: null };
 	if (!head) { // list is empty
 		return newNode;
@@ -201,7 +201,7 @@ function sortedInsert(head: NullableNodeRef, data: number): Node {
 }
 
 function testSortedInsert() {
-	let head: NullableNodeRef = null;
+	let head: NodeRef = null;
 	head = sortedInsert(head, 1);
 	assert.deepEqual(toArray(head), [1]);
 
@@ -214,7 +214,7 @@ function testSortedInsert() {
 
 testSortedInsert();
 
-function reverseUsingStack(head: NullableNodeRef): NullableNodeRef {
+function reverseUsingStack(head: NodeRef): NodeRef {
 	const stack: number[] = [];
 	let curr = head;
 	// store the data in stack
@@ -233,14 +233,14 @@ function reverseUsingStack(head: NullableNodeRef): NullableNodeRef {
 }
 
 function testReverseUsingStack() {
-	let head: NullableNodeRef = { data: 1, next: { data: 2, next: { data: 3, next: null } } }
+	let head: NodeRef = { data: 1, next: { data: 2, next: { data: 3, next: null } } }
 	head = reverseUsingStack(head);
 	assert.deepEqual(toArray(head), [3, 2, 1]);
 }
 
 testReverseUsingStack();
 
-function reverse(head: NullableNodeRef): NullableNodeRef {
+function reverse(head: NodeRef): NodeRef {
 	let curr = head;
 	let prev = null;
 	while (curr) {
@@ -256,14 +256,14 @@ function reverse(head: NullableNodeRef): NullableNodeRef {
 }
 
 function testReverse() {
-	let head: NullableNodeRef = { data: 1, next: { data: 2, next: { data: 3, next: null } } };
+	let head: NodeRef = { data: 1, next: { data: 2, next: { data: 3, next: null } } };
 	head = reverse(head);
 	assert.deepEqual(toArray(head), [3, 2, 1]);
 }
 
 testReverse();
 
-function reverseRec(curr: NullableNodeRef, prev: NullableNodeRef = null): NullableNodeRef {
+function reverseRec(curr: NodeRef, prev: NodeRef = null): NodeRef {
 	// the idea is we reverse the first link and then make recursive call to reverse next link
 	if (!curr) { // base case, compare to iterative reverse above. We reached to the end of list and prev points to the last node that is new head
 		return prev;
@@ -275,7 +275,7 @@ function reverseRec(curr: NullableNodeRef, prev: NullableNodeRef = null): Nullab
 }
 
 function testReverseRec() {
-	let head: NullableNodeRef = { data: 1, next: { data: 2, next: { data: 3, next: null } } };
+	let head: NodeRef = { data: 1, next: { data: 2, next: { data: 3, next: null } } };
 	head = reverseRec(head);
 	assert.deepEqual(toArray(head), [3, 2, 1]);
 }
