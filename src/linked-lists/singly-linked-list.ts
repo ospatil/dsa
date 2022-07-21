@@ -8,7 +8,7 @@ type Node = {
 type NodeRef = Node | null;
 
 function toArray(head: NodeRef) {
-	const arr: number[] = [];
+	const arr = [];
 	let curr = head;
 	while (curr) {
 		arr.push(curr.data);
@@ -74,7 +74,7 @@ function insertPos(head: Node, pos: number, data: number): Node {
 	// so to add to 4th position, we need to point to 3rd and curr needs to be moved 2 times
 	// for pos 3, curr needs to be moved 1 time
 	// i.e. (pos - 2) times
-	let curr: Node | null = head;
+	let curr: NodeRef = head;
 	for (let i = 0; i < pos - 2; i++) {
 		curr = curr.next;
 
@@ -111,7 +111,7 @@ function deleteFirst(head: NodeRef): NodeRef {
 }
 
 function testDeleteFirst() {
-	let head: Node | null = { data: 1, next: { data: 2, next: null } };
+	let head: NodeRef = { data: 1, next: { data: 2, next: null } };
 	head = deleteFirst(head);
 	assert.deepEqual(toArray(head), [2]);
 
@@ -215,7 +215,7 @@ function testSortedInsert() {
 testSortedInsert();
 
 function reverseUsingStack(head: NodeRef): NodeRef {
-	const stack: number[] = [];
+	const stack = [];
 	let curr = head;
 	// store the data in stack
 	while (curr) {
