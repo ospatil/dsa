@@ -19,3 +19,8 @@ doc-build:
 clean:
 	rm -rf $(THEMEDIR) && \
 	rm -rf $(BASEDIR)/public
+
+.PHONY: dev
+dev:
+	cd docs && \
+	hugo server -D --baseURL http://localhost/

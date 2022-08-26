@@ -5,13 +5,12 @@ My notes and implementations of data structures and algorithms: <https://dsa.omk
 ## Setup
 
 1. Clone the repo.
-2. Run `pnpm i`.
-3. Explore.
+2. Explore the code in `src` folder.
 
 ### Static Site
 
 1. Install `hugo`.
-2. Run `pnpm hugo:dev`.
+2. Run `make dev`.
 3. Build using: `make doc`.
 
 ## Notes
