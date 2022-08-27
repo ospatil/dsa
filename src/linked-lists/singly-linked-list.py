@@ -114,3 +114,154 @@ def test_delete_first():
 
 
 test_delete_first()
+
+
+def delete_last(head):
+    if head is None or head.next is None:  # empty or one node list
+        return None
+    else:
+        curr = head
+        # we need to stop at second-last node, therefore curr.next.next check
+        while curr.next.next is not None:
+            curr = curr.next
+        curr.next = None
+    return head
+
+
+def test_delete_last():
+    head = Node(1)
+    head.next = Node(2)
+
+    head = delete_last(head)
+    assert to_list(head) == [1]
+
+    head = delete_last(head)
+    assert head is None
+
+
+test_delete_last()
+
+
+# Return the position of data if found else return -1. Position is 1 based.
+def search(head, data):
+    pos, curr = 1, head
+    while curr is not None:
+        if curr.data == data:
+            return pos
+        pos += 1
+        curr = curr.next
+    return -1
+
+
+def test_search():
+    head = Node(10)
+    head.next = Node(4)
+    head.next.next = Node(24)
+
+    assert search(head, 24) == 3
+    assert search(head, 34) == -1
+
+
+test_search()
+
+
+def sorted_insert(head, data):
+    new = Node(data)
+    if head is None:  # if list is empty, new node becomes head
+        return new
+    elif data < head.data:  # new data less than head, new node becomes head
+        new.next = head
+        return new
+    else:
+        curr = head
+        # find the node whose next's data is greater than new data
+        while curr.next is not None and curr.next.data < data:
+            curr = curr.next
+        new.next = curr.next
+        curr.next = new
+        return head
+
+
+def test_sorted_insert():
+    head = sorted_insert(None, 2)
+    head = sorted_insert(head, 3)
+    head = sorted_insert(head, 4)
+    head = sorted_insert(head, 1)
+    assert to_list(head) == [1, 2, 3, 4]
+
+
+test_sorted_insert()
+
+
+def reverse_using_stack(head):
+    stack = []
+    curr = head
+    while curr is not None:
+        stack.append(curr.data)
+        curr = curr.next
+    curr = head
+    while curr is not None:
+        curr.data = stack.pop()
+        curr = curr.next
+    return head
+
+
+def test_reverse_using_stack():
+    head = Node(1)
+    head.next = Node(2)
+    head.next.next = Node(3)
+
+    head = reverse_using_stack(head)
+    assert to_list(head) == [3, 2, 1]
+
+
+test_reverse_using_stack()
+
+
+def reverse(head):
+    # three pointer technique
+    curr, prev = head, None
+    while curr is not None:
+        next = curr.next  # store reference to next
+        curr.next = prev
+        prev = curr  # prev becomes curr
+        curr = next  # curr becomes next
+    # at this point, curr points to the last null and prev points to the last node which will be the new head
+    return prev
+
+
+def test_reverse():
+    head = Node(10)
+    head = insert_end(head, 20)
+    head = insert_end(head, 30)
+    head = insert_end(head, 40)
+
+    head = reverse(head)
+    assert to_list(head) == [40, 30, 20, 10]
+
+
+test_reverse()
+
+
+def reverse_rec(curr, prev=None):
+    # the idea is we reverse the first link and then make recursive call to reverse next link
+    if curr is None:
+        # base case, compare to iterative reverse above. We reached to the end of list and prev points to the last node that is new head
+        return prev
+    next = curr.next  # store reference to next node
+    curr.next = prev  # reverse the link
+    # continue the reversal with next as curr node and curr as previous for next call
+    return reverse_rec(next, curr)
+
+
+def test_reverse_rec():
+    head = Node(10)
+    head = insert_end(head, 20)
+    head = insert_end(head, 30)
+    head = insert_end(head, 40)
+
+    head = reverse_rec(head)
+    assert to_list(head) == [40, 30, 20, 10]
+
+
+test_reverse_rec()
