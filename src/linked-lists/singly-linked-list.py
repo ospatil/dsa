@@ -96,10 +96,7 @@ test_insert_pos()
 
 
 def delete_first(head):
-    if head is None:
-        return None
-    else:
-        return head.next
+    return None if head is None else head.next
 
 
 def test_delete_first():
