@@ -42,8 +42,9 @@ Binary tree can have 0, 1 or 2 children.
 Binary tree can also be represented as array.
 """
 
-import math
 from collections import deque
+import math
+import unittest
 
 
 class Node:
@@ -64,29 +65,6 @@ def inorder(root, ls):
         inorder(root.right, ls)
 
 
-def create_test_tree():
-    # tree
-    #     10
-    #  20    30
-    #      40  50
-    root = Node(10)
-    root.left = Node(20)
-    root.right = Node(30)
-    root.right.left = Node(40)
-    root.right.right = Node(50)
-    return root
-
-
-def test_inorder():
-    root = create_test_tree()
-    ls = []
-    inorder(root, ls)
-    assert ls == [20, 10, 40, 30, 50]
-
-
-test_inorder()
-
-
 def preorder(root, ls):
     """
     Time complexity: 𝛳(n)
@@ -96,16 +74,6 @@ def preorder(root, ls):
         ls.append(root.data)
         preorder(root.left, ls)
         preorder(root.right, ls)
-
-
-def test_preorder():
-    root = create_test_tree()
-    ls = []
-    preorder(root, ls)
-    assert ls == [10, 20, 30, 40, 50]
-
-
-test_preorder()
 
 
 def postorder(root, ls):
@@ -120,16 +88,6 @@ def postorder(root, ls):
         ls.append(root.data)
 
 
-def test_postorder():
-    root = create_test_tree()
-    ls = []
-    postorder(root, ls)
-    assert ls == [20, 40, 50, 30, 10]
-
-
-test_postorder()
-
-
 def size(root):
     """
     Time complexity: 𝛳(n)
@@ -140,14 +98,6 @@ def size(root):
         return 0
     else:
         return 1 + size(root.left) + size(root.right)
-
-
-def test_size():
-    root = create_test_tree()
-    assert size(root) == 5
-
-
-test_size()
 
 
 def get_max(root):
@@ -162,14 +112,6 @@ def get_max(root):
         return max(root.data, get_max(root.left), get_max(root.right))
 
 
-def test_get_max():
-    root = create_test_tree()
-    assert get_max(root) == 50
-
-
-test_get_max()
-
-
 def search(root, data):
     """
     Time complexity: O(n)
@@ -181,15 +123,6 @@ def search(root, data):
         return True
     else:
         return search(root.left, data) or search(root.right, data)
-
-
-def test_search():
-    root = create_test_tree()
-    assert search(root, 40) is True
-    assert search(root, 60) is False
-
-
-test_search()
 
 
 def height(root):
@@ -210,14 +143,6 @@ def height(root):
         return 0
     else:
         return 1 + max(height(root.left), height(root.right))  # +1 for the root node
-
-
-def test_height():
-    root = create_test_tree()
-    assert height(root) == 3
-
-
-test_height()
 
 
 def inorder_iter(root):
@@ -248,14 +173,6 @@ def inorder_iter(root):
     return result
 
 
-def test_inorder_iter():
-    root = create_test_tree()
-    assert inorder_iter(root) == [20, 10, 40, 30, 50]
-
-
-test_inorder_iter()
-
-
 def preorder_iter(root):
     """
     Time complexity: 𝛳(n)
@@ -282,14 +199,6 @@ def preorder_iter(root):
     return result
 
 
-def test_preorder_iter():
-    root = create_test_tree()
-    assert preorder_iter(root) == [10, 20, 30, 40, 50]
-
-
-test_preorder_iter()
-
-
 def levelorder(root):
     """
     Time complexity: 𝛳(n)
@@ -311,9 +220,66 @@ def levelorder(root):
     return result
 
 
-def test_levelorder():
-    root = create_test_tree()
-    assert levelorder(root) == [10, 20, 30, 40, 50]
+class BinaryTreeTests(unittest.TestCase):
+    def create_test_tree(self):
+        # tree
+        #     10
+        #  20    30
+        #      40  50
+        root = Node(10)
+        root.left = Node(20)
+        root.right = Node(30)
+        root.right.left = Node(40)
+        root.right.right = Node(50)
+        return root
+
+    def test_inorder(self):
+        root = self.create_test_tree()
+        ls = []
+        inorder(root, ls)
+        self.assertListEqual(ls, [20, 10, 40, 30, 50])
+
+    def test_preorder(self):
+        root = self.create_test_tree()
+        ls = []
+        preorder(root, ls)
+        self.assertListEqual(ls, [10, 20, 30, 40, 50])
+
+    def test_postorder(self):
+        root = self.create_test_tree()
+        ls = []
+        postorder(root, ls)
+        self.assertListEqual(ls, [20, 40, 50, 30, 10])
+
+    def test_size(self):
+        root = self.create_test_tree()
+        self.assertEqual(size(root), 5)
+
+    def test_get_max(self):
+        root = self.create_test_tree()
+        self.assertEqual(get_max(root), 50)
+
+    def test_search(self):
+        root = self.create_test_tree()
+        self.assertTrue(search(root, 40))
+        self.assertFalse(search(root, 60))
+
+    def test_height(self):
+        root = self.create_test_tree()
+        self.assertEqual(height(root), 3)
+
+    def test_inorder_iter(self):
+        root = self.create_test_tree()
+        self.assertListEqual(inorder_iter(root), [20, 10, 40, 30, 50])
+
+    def test_preorder_iter(self):
+        root = self.create_test_tree()
+        self.assertListEqual(preorder_iter(root), [10, 20, 30, 40, 50])
+
+    def test_levelorder(self):
+        root = self.create_test_tree()
+        self.assertListEqual(levelorder(root), [10, 20, 30, 40, 50])
 
 
-test_levelorder()
+if __name__ == "__main__":
+    unittest.main()

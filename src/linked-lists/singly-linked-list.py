@@ -1,3 +1,6 @@
+import unittest
+
+
 class Node:
     def __init__(self, data) -> None:
         self.data = data
@@ -19,16 +22,6 @@ def insert_begin(head, data):
     return new  # new node becomes new head
 
 
-def test_insert_begin():
-    head = None
-    head = insert_begin(head, 20)
-    head = insert_begin(head, 10)
-    assert to_list(head) == [10, 20]
-
-
-test_insert_begin()
-
-
 def insert_end(head, data):
     new = Node(data)
     if head is None:  # empty list, new node becomes new head
@@ -38,16 +31,6 @@ def insert_end(head, data):
         curr = curr.next
     curr.next = new  # add new node at the end
     return head
-
-
-def test_insert_end():
-    head = None
-    head = insert_end(head, 10)
-    head = insert_end(head, 20)
-    assert to_list(head) == [10, 20]
-
-
-test_insert_end()
 
 
 def insert_pos(head, pos, data):
@@ -72,45 +55,8 @@ def insert_pos(head, pos, data):
     return head
 
 
-def test_insert_pos():
-    head = None
-    head = insert_end(head, 2)
-    head = insert_end(head, 3)
-    head = insert_end(head, 5)
-    head = insert_end(head, 6)
-
-    # insert at beginning
-    head = insert_pos(head, 1, 1)
-    assert to_list(head) == [1, 2, 3, 5, 6]
-
-    # insert in middle
-    head = insert_pos(head, 4, 4)
-    assert to_list(head) == [1, 2, 3, 4, 5, 6]
-
-    # insert beyond the length of the list
-    head = insert_pos(head, 10, 10)
-    assert to_list(head) == [1, 2, 3, 4, 5, 6]
-
-
-test_insert_pos()
-
-
 def delete_first(head):
     return None if head is None else head.next
-
-
-def test_delete_first():
-    head = Node(1)
-    head.next = Node(2)
-
-    head = delete_first(head)
-    assert to_list(head) == [2]
-
-    head = delete_first(head)
-    assert head is None
-
-
-test_delete_first()
 
 
 def delete_last(head):
@@ -125,20 +71,6 @@ def delete_last(head):
     return head
 
 
-def test_delete_last():
-    head = Node(1)
-    head.next = Node(2)
-
-    head = delete_last(head)
-    assert to_list(head) == [1]
-
-    head = delete_last(head)
-    assert head is None
-
-
-test_delete_last()
-
-
 # Return the position of data if found else return -1. Position is 1 based.
 def search(head, data):
     pos, curr = 1, head
@@ -148,18 +80,6 @@ def search(head, data):
         pos += 1
         curr = curr.next
     return -1
-
-
-def test_search():
-    head = Node(10)
-    head.next = Node(4)
-    head.next.next = Node(24)
-
-    assert search(head, 24) == 3
-    assert search(head, 34) == -1
-
-
-test_search()
 
 
 def sorted_insert(head, data):
@@ -179,17 +99,6 @@ def sorted_insert(head, data):
         return head
 
 
-def test_sorted_insert():
-    head = sorted_insert(None, 2)
-    head = sorted_insert(head, 3)
-    head = sorted_insert(head, 4)
-    head = sorted_insert(head, 1)
-    assert to_list(head) == [1, 2, 3, 4]
-
-
-test_sorted_insert()
-
-
 def reverse_using_stack(head):
     stack = []
     curr = head
@@ -201,18 +110,6 @@ def reverse_using_stack(head):
         curr.data = stack.pop()
         curr = curr.next
     return head
-
-
-def test_reverse_using_stack():
-    head = Node(1)
-    head.next = Node(2)
-    head.next.next = Node(3)
-
-    head = reverse_using_stack(head)
-    assert to_list(head) == [3, 2, 1]
-
-
-test_reverse_using_stack()
 
 
 def reverse(head):
@@ -227,19 +124,6 @@ def reverse(head):
     return prev
 
 
-def test_reverse():
-    head = Node(10)
-    head = insert_end(head, 20)
-    head = insert_end(head, 30)
-    head = insert_end(head, 40)
-
-    head = reverse(head)
-    assert to_list(head) == [40, 30, 20, 10]
-
-
-test_reverse()
-
-
 def reverse_rec(curr, prev=None):
     # the idea is we reverse the first link and then make recursive call to reverse next link
     if curr is None:
@@ -251,14 +135,99 @@ def reverse_rec(curr, prev=None):
     return reverse_rec(next, curr)
 
 
-def test_reverse_rec():
-    head = Node(10)
-    head = insert_end(head, 20)
-    head = insert_end(head, 30)
-    head = insert_end(head, 40)
+class SinglyLinkedListTests(unittest.TestCase):
+    def test_insert_begin(self):
+        head = None
+        head = insert_begin(head, 20)
+        head = insert_begin(head, 10)
+        self.assertListEqual(to_list(head), [10, 20])
 
-    head = reverse_rec(head)
-    assert to_list(head) == [40, 30, 20, 10]
+    def test_insert_end(self):
+        head = None
+        head = insert_end(head, 10)
+        head = insert_end(head, 20)
+        self.assertListEqual(to_list(head), [10, 20])
+
+    def test_insert_pos(self):
+        head = None
+        head = insert_end(head, 2)
+        head = insert_end(head, 3)
+        head = insert_end(head, 5)
+        head = insert_end(head, 6)
+
+        # insert at beginning
+        head = insert_pos(head, 1, 1)
+        self.assertListEqual(to_list(head), [1, 2, 3, 5, 6])
+
+        # insert in middle
+        head = insert_pos(head, 4, 4)
+        self.assertListEqual(to_list(head), [1, 2, 3, 4, 5, 6])
+
+        # insert beyond the length of the list
+        head = insert_pos(head, 10, 10)
+        self.assertListEqual(to_list(head), [1, 2, 3, 4, 5, 6])
+
+    def test_delete_first(self):
+        head = Node(1)
+        head.next = Node(2)
+
+        head = delete_first(head)
+        self.assertListEqual(to_list(head), [2])
+
+        head = delete_first(head)
+        self.assertIsNone(head)
+
+    def test_delete_last(self):
+        head = Node(1)
+        head.next = Node(2)
+
+        head = delete_last(head)
+        self.assertListEqual(to_list(head), [1])
+
+        head = delete_last(head)
+        self.assertIsNone(head)
+
+    def test_search(self):
+        head = Node(10)
+        head.next = Node(4)
+        head.next.next = Node(24)
+
+        self.assertEqual(search(head, 24), 3)
+        self.assertEqual(search(head, 34), -1)
+
+    def test_sorted_insert(self):
+        head = sorted_insert(None, 2)
+        head = sorted_insert(head, 3)
+        head = sorted_insert(head, 4)
+        head = sorted_insert(head, 1)
+        self.assertListEqual(to_list(head), [1, 2, 3, 4])
+
+    def test_reverse_using_stack(self):
+        head = Node(1)
+        head.next = Node(2)
+        head.next.next = Node(3)
+
+        head = reverse_using_stack(head)
+        self.assertListEqual(to_list(head), [3, 2, 1])
+
+    def test_reverse(self):
+        head = Node(10)
+        head = insert_end(head, 20)
+        head = insert_end(head, 30)
+        head = insert_end(head, 40)
+
+        head = reverse(head)
+        self.assertListEqual(to_list(head), [40, 30, 20, 10])
+
+    def test_reverse_rec(self):
+        head = Node(10)
+        head = insert_end(head, 20)
+        head = insert_end(head, 30)
+        head = insert_end(head, 40)
+
+        head = reverse_rec(head)
+        self.assertListEqual(to_list(head), [40, 30, 20, 10])
 
 
-test_reverse_rec()
+if __name__ == "__main__":
+    unittest.main()

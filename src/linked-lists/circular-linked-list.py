@@ -1,3 +1,6 @@
+import unittest
+
+
 class Node:
     def __init__(self, data):
         self.data = data
@@ -33,16 +36,6 @@ def insert_begin_linear(head, data):
     return new  # new node becomes the head
 
 
-def test_insert_begin_linear():
-    head = None
-    head = insert_begin_linear(head, 20)
-    head = insert_begin_linear(head, 10)
-    assert to_list(head) == [10, 20]
-
-
-test_insert_begin_linear()
-
-
 def insert_begin_constant(head, data):
     # neat trick, insert new node at second place and swap data with head
     new = Node(data)
@@ -54,17 +47,6 @@ def insert_begin_constant(head, data):
         head.next = new
         head.data, new.data = new.data, head.data  # swap data
         return head
-
-
-def test_insert_begin_constant():
-    head = None
-    head = insert_begin_constant(head, 30)
-    head = insert_begin_constant(head, 20)
-    head = insert_begin_constant(head, 10)
-    assert to_list(head) == [10, 20, 30]
-
-
-test_insert_begin_constant()
 
 
 def insert_end_linear(head, data):
@@ -82,17 +64,6 @@ def insert_end_linear(head, data):
         return head
 
 
-def test_insert_end_linear():
-    head = None
-    head = insert_end_linear(head, 10)
-    head = insert_end_linear(head, 20)
-    head = insert_end_linear(head, 30)
-    assert to_list(head) == [10, 20, 30]
-
-
-test_insert_end_linear()
-
-
 def insert_end_constant(head, data):
     # neat trick, insert new node at second place, swap data with head and new node becomes head
     new = Node(data)
@@ -106,17 +77,6 @@ def insert_end_constant(head, data):
         return new  # new becomes head
 
 
-def test_insert_end_constant():
-    head = None
-    head = insert_end_constant(head, 10)
-    head = insert_end_constant(head, 20)
-    head = insert_end_constant(head, 30)
-    assert to_list(head) == [10, 20, 30]
-
-
-test_insert_end_constant()
-
-
 def delete_head_linear(head):
     if head is None or head.next is None:  # empty or one node list
         return None
@@ -128,18 +88,6 @@ def delete_head_linear(head):
         return curr.next  # node after the head becomes the new head
 
 
-def test_delete_head_linear():
-    head = None
-    head = insert_begin_constant(head, 30)
-    head = insert_begin_constant(head, 20)
-    head = insert_begin_constant(head, 10)
-    head = delete_head_linear(head)
-    assert to_list(head) == [20, 30]
-
-
-test_delete_head_linear()
-
-
 def delete_head_constant(head):
     # neat trick - make head effectively the second node by copying data and then unlink second node
     if head is None or head.next is None:  # empty or one node list
@@ -148,18 +96,6 @@ def delete_head_constant(head):
         head.data = head.next.data
         head.next = head.next.next
         return head
-
-
-def test_delete_head_constant():
-    head = None
-    head = insert_begin_constant(head, 30)
-    head = insert_begin_constant(head, 20)
-    head = insert_begin_constant(head, 10)
-    head = delete_head_constant(head)
-    assert to_list(head) == [20, 30]
-
-
-test_delete_head_constant()
 
 
 def delete_pos(head, pos):
@@ -179,21 +115,66 @@ def delete_pos(head, pos):
         return head
 
 
-def test_delete_pos():
-    head = None
-    head = insert_end_constant(head, 10)
-    head = insert_end_constant(head, 20)
-    head = insert_end_constant(head, 30)
-    head = insert_end_constant(head, 40)
-    head = insert_end_constant(head, 50)
+class CircularLinkedListTests(unittest.TestCase):
+    def test_insert_begin_linear(self):
+        head = None
+        head = insert_begin_linear(head, 20)
+        head = insert_begin_linear(head, 10)
+        self.assertListEqual(to_list(head), [10, 20])
 
-    assert to_list(head) == [10, 20, 30, 40, 50]
-    head = delete_pos(head, 1)
-    assert to_list(head) == [20, 30, 40, 50]
-    head = delete_pos(head, 2)
-    assert to_list(head) == [20, 40, 50]
-    head = delete_pos(head, 3)
-    assert to_list(head) == [20, 40]
+    def test_insert_begin_constant(self):
+        head = None
+        head = insert_begin_constant(head, 30)
+        head = insert_begin_constant(head, 20)
+        head = insert_begin_constant(head, 10)
+        self.assertListEqual(to_list(head), [10, 20, 30])
+
+    def test_insert_end_linear(self):
+        head = None
+        head = insert_end_linear(head, 10)
+        head = insert_end_linear(head, 20)
+        head = insert_end_linear(head, 30)
+        self.assertListEqual(to_list(head), [10, 20, 30])
+
+    def test_insert_end_constant(self):
+        head = None
+        head = insert_end_constant(head, 10)
+        head = insert_end_constant(head, 20)
+        head = insert_end_constant(head, 30)
+        self.assertListEqual(to_list(head), [10, 20, 30])
+
+    def test_delete_head_linear(self):
+        head = None
+        head = insert_begin_constant(head, 30)
+        head = insert_begin_constant(head, 20)
+        head = insert_begin_constant(head, 10)
+        head = delete_head_linear(head)
+        self.assertListEqual(to_list(head), [20, 30])
+
+    def test_delete_head_constant(self):
+        head = None
+        head = insert_begin_constant(head, 30)
+        head = insert_begin_constant(head, 20)
+        head = insert_begin_constant(head, 10)
+        head = delete_head_constant(head)
+        self.assertListEqual(to_list(head), [20, 30])
+
+    def test_delete_pos(self):
+        head = None
+        head = insert_end_constant(head, 10)
+        head = insert_end_constant(head, 20)
+        head = insert_end_constant(head, 30)
+        head = insert_end_constant(head, 40)
+        head = insert_end_constant(head, 50)
+
+        self.assertListEqual(to_list(head), [10, 20, 30, 40, 50])
+        head = delete_pos(head, 1)
+        self.assertListEqual(to_list(head), [20, 30, 40, 50])
+        head = delete_pos(head, 2)
+        self.assertListEqual(to_list(head), [20, 40, 50])
+        head = delete_pos(head, 3)
+        self.assertListEqual(to_list(head), [20, 40])
 
 
-test_delete_pos()
+if __name__ == "__main__":
+    unittest.main()

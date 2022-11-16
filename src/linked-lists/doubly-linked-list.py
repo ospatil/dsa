@@ -1,3 +1,6 @@
+import unittest
+
+
 class Node:
     def __init__(self, data) -> None:
         self.data = data
@@ -22,15 +25,6 @@ def insert_begin(head, data):
     return new
 
 
-def test_insert_begin():
-    head = insert_begin(None, 2)
-    head = insert_begin(head, 1)
-    assert to_list(head) == [1, 2]
-
-
-test_insert_begin()
-
-
 def insert_end(head, data):
     new = Node(data)
     if head is None:
@@ -45,16 +39,6 @@ def insert_end(head, data):
         return head
 
 
-def test_insert_end():
-    head = insert_end(None, 1)
-    head = insert_end(head, 2)
-    head = insert_end(head, 3)
-    assert to_list(head) == [1, 2, 3]
-
-
-test_insert_end()
-
-
 def delete_head(head):
     if head is None or head.next is None:  # empty or 1 node list
         return None
@@ -62,19 +46,6 @@ def delete_head(head):
         head = head.next  # make second node as head
         head.prev = None
         return head
-
-
-def test_delete_head():
-    head = insert_end(None, 1)
-    head = insert_end(head, 2)
-    head = delete_head(head)
-    assert to_list(head) == [2]
-
-    head = delete_head(head)
-    assert head is None
-
-
-test_delete_head()
 
 
 def delete_last(head):
@@ -86,24 +57,6 @@ def delete_last(head):
             curr = curr.next
         curr.next = None  # make second last node as last node
         return head
-
-
-def test_delete_last():
-    head = insert_end(None, 1)
-    head = insert_end(head, 2)
-    head = insert_end(head, 3)
-
-    head = delete_last(head)
-    assert to_list(head) == [1, 2]
-
-    head = delete_last(head)
-    assert to_list(head) == [1]
-
-    head = delete_last(head)
-    assert head is None
-
-
-test_delete_last()
 
 
 def reverse(head):
@@ -125,19 +78,55 @@ def reverse(head):
         return prev
 
 
-def test_reverse():
-    head = None
-    head = reverse(head)
-    assert head is None
+class DoublyLinkedListTests(unittest.TestCase):
+    def test_insert_begin(self):
+        head = insert_begin(None, 2)
+        head = insert_begin(head, 1)
+        self.assertListEqual(to_list(head), [1, 2])
 
-    head = insert_end(head, 1)
-    head = reverse(head)
-    assert to_list(head) == [1]
+    def test_insert_end(self):
+        head = insert_end(None, 1)
+        head = insert_end(head, 2)
+        head = insert_end(head, 3)
+        self.assertListEqual(to_list(head), [1, 2, 3])
 
-    head = insert_end(head, 2)
-    head = insert_end(head, 3)
-    head = reverse(head)
-    assert to_list(head) == [3, 2, 1]
+    def test_delete_head(self):
+        head = insert_end(None, 1)
+        head = insert_end(head, 2)
+        head = delete_head(head)
+        self.assertListEqual(to_list(head), [2])
+
+        head = delete_head(head)
+        self.assertIsNone(head)
+
+    def test_delete_last(self):
+        head = insert_end(None, 1)
+        head = insert_end(head, 2)
+        head = insert_end(head, 3)
+
+        head = delete_last(head)
+        self.assertListEqual(to_list(head), [1, 2])
+
+        head = delete_last(head)
+        self.assertListEqual(to_list(head), [1])
+
+        head = delete_last(head)
+        self.assertIsNone(head)
+
+    def test_reverse(self):
+        head = None
+        head = reverse(head)
+        self.assertIsNone(head)
+
+        head = insert_end(head, 1)
+        head = reverse(head)
+        self.assertListEqual(to_list(head), [1])
+
+        head = insert_end(head, 2)
+        head = insert_end(head, 3)
+        head = reverse(head)
+        self.assertListEqual(to_list(head), [3, 2, 1])
 
 
-test_reverse()
+if __name__ == "__main__":
+    unittest.main()
