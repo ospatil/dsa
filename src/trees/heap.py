@@ -1,4 +1,5 @@
 import math
+import unittest
 
 """
 Binary heap
@@ -78,26 +79,6 @@ class MinHeap:
     def rchild(self, i):
         return (2 * i) + 2
 
-    def insert(self, x):
-        """
-        Time complexity: O(log n)
-
-        The idea is to append x to the end of the array - O(1) operation
-        But if it is smaller than its parents, it will violate min heap property.
-        Therefore, we travel the height of the binary heap, and keep swapping x with parent (and grant-parent etc)
-        as needed till it's in its intended place.
-        This operation is O(log n) since traveling across the height of binary heap is log of size operation.
-        """
-        arr = self.arr
-        arr.append(x)
-        # move it in its right place
-        i = len(arr) - 1  # current index of x
-        # continue swap till we either reach root (i = 0) or parent is smaller or equal (arr[self.parent(i)] > arr[i])
-        while i > 0 and arr[self.parent(i)] > arr[i]:
-            p = self.parent(i)
-            arr[i], arr[p] = arr[p], arr[i]  # swap with parent
-            i = p  # move i to parent and continue
-
     def heapify(self, i):
         """
         Fixes min heap whose root might be violating min heap property
@@ -121,6 +102,26 @@ class MinHeap:
         if smallest != i:
             arr[smallest], arr[i] = arr[i], arr[smallest]
             self.heapify(smallest)
+
+    def insert(self, x):
+        """
+        Time complexity: O(log n)
+
+        The idea is to append x to the end of the array - O(1) operation
+        But if it is smaller than its parents, it will violate min heap property.
+        Therefore, we travel the height of the binary heap, and keep swapping x with parent (and grant-parent etc)
+        as needed till it's in its intended place.
+        This operation is O(log n) since traveling across the height of binary heap is log of size operation.
+        """
+        arr = self.arr
+        arr.append(x)
+        # move it in its right place
+        i = len(arr) - 1  # current index of x
+        # continue swap till we either reach root (i = 0) or parent is smaller or equal (arr[self.parent(i)] > arr[i])
+        while i > 0 and arr[self.parent(i)] > arr[i]:
+            p = self.parent(i)
+            arr[i], arr[p] = arr[p], arr[i]  # swap with parent
+            i = p  # move i to parent and continue
 
     def extract_min(self):
         """
@@ -170,3 +171,64 @@ class MinHeap:
             # set the intended key to negative infinity. It will bubble up to root.
             self.decrease_key(i, -math.inf)
             self.extract_min()  # remove the root and re-heapify
+
+
+"""
+Heap Sort
+    Can be seen as optimization over selection sort.
+    In selection sort, we find out the maximum element in the array using linear search, swap it with the last
+    continue with the remaining elements.
+    The idea of heap sort is instead of doing a linear search, we maintain the remaining elements in heap structure.
+    With heap data structure, we can find maximum or minimum in O(log n) time and therefore the overall complexity
+    becomes O(n log n) rather than O(n^2) like selection sort.
+
+Steps:
+    1. Build a max heap
+    2. Repeatedly swap root with the last node, reduce heap size by 1 and heapify
+
+Time complexity: O(n log n)
+Aux space: O(1) (or O(log n) if we use recursion)
+
+It's not stable.
+Heapsort is 2-3 times slower than quicksort because quicksort has better locality of reference than heapsort.
+Used in hybrid sorting algorithms like IntroSort
+"""
+
+
+def build_heap(arr):
+    n = len(arr)
+    for i in range((n - 2) // 2, -1, -1):  # starting from last non-leaf node
+        max_heapify(arr, n, i)
+
+
+def max_heapify(arr, n, i):
+    largest = i
+    left = 2 * i + 1
+    right = 2 * i + 2
+    if left < n and arr[left] < arr[largest]:
+        largest = left
+    if right < n and arr[right] < arr[largest]:
+        largest = right
+    if largest != i:
+        arr[i], arr[largest] = arr[largest], arr[i]
+        max_heapify(arr, n, largest)  # max_heapify the subtree with largest as its root
+
+
+def heap_sort(arr):
+    n = len(arr)
+    build_heap(arr)
+    # now that we have built the max heap with largest element at root i.e. 0th element of the array
+    # swap it with last element of the array and reheapify the remaining part.
+    for i in range(n - 1, 0, -1):
+        arr[i], arr[0] = arr[0], arr[i]
+        max_heapify(arr, i, 0)
+
+
+class HeapTests(unittest.TestCase):
+    def test_create_heap(self):
+        heap = MinHeap([30, 20, 50, 10, 70, 60])
+        print(heap.arr)
+
+
+if __name__ == "__main__":
+    unittest.main()
