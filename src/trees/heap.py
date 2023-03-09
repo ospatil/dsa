@@ -1,5 +1,5 @@
-import math
 import unittest
+import math
 
 """
 Binary heap
@@ -55,8 +55,9 @@ class MinHeap:
         Naive approach: Sort the arr and then build heap
         Time complexity: O(n log n)
 
-        Efficient approach: find the position of the last non-leaf node and perform
-        the heapify operation of each non-leaf node in reverse level order.
+        Efficient approach: find the position of the bottom-most, right-most non-leaf node
+        and perform the heapify operation of each non-leaf node in reverse level order.
+        The assumption for that node is the left and right children are already heapified.
         Last non-leaf node is going to be the parent of last-node.
         i.e. parent of node at (len(l)-1) index
         i.e. Node at index ((len(l)-1) - 1)//2.
@@ -99,6 +100,7 @@ class MinHeap:
         if rt < n and arr[rt] < arr[smallest]:
             smallest = rt
         # if root is not smallest, swap and carry on heapifying the concerned subtree
+        # smallest points to root of one of the subtrees, left or right
         if smallest != i:
             arr[smallest], arr[i] = arr[i], arr[smallest]
             self.heapify(smallest)
@@ -178,7 +180,7 @@ Heap Sort
     Can be seen as optimization over selection sort.
     In selection sort, we find out the maximum element in the array using linear search, swap it with the last
     continue with the remaining elements.
-    The idea of heap sort is instead of doing a linear search, we maintain the remaining elements in heap structure.
+    The idea of heap sort is, instead of doing a linear search, we maintain the remaining elements in heap structure.
     With heap data structure, we can find maximum or minimum in O(log n) time and therefore the overall complexity
     becomes O(n log n) rather than O(n^2) like selection sort.
 
@@ -205,9 +207,9 @@ def max_heapify(arr, n, i):
     largest = i
     left = 2 * i + 1
     right = 2 * i + 2
-    if left < n and arr[left] < arr[largest]:
+    if left < n and arr[left] > arr[largest]:
         largest = left
-    if right < n and arr[right] < arr[largest]:
+    if right < n and arr[right] > arr[largest]:
         largest = right
     if largest != i:
         arr[i], arr[largest] = arr[largest], arr[i]
@@ -226,8 +228,8 @@ def heap_sort(arr):
 
 class HeapTests(unittest.TestCase):
     def test_create_heap(self):
-        heap = MinHeap([30, 20, 50, 10, 70, 60])
-        print(heap.arr)
+        heap = MinHeap([10, 5, 20, 2, 4, 8])
+        self.assertListEqual(heap.arr, [2, 4, 8, 5, 10, 20])
 
 
 if __name__ == "__main__":
