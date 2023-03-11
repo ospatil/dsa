@@ -1,3 +1,0 @@
-[flake8]
-# ignore 120 character lines rule in comments (E501), max-line-length 100 (E902)
-ignore = E501,E902

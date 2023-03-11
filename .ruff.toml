@@ -1,0 +1,9 @@
+[tool.ruff]
+# Enable flake8-bugbear (`B`) rules.
+select = ["E", "F", "B"]
+
+# Never enforce 120 character lines rule in comments (E501), max-line-length 100 (E902)
+ignore = ["E501", "E902"]
+
+# Avoid trying to fix flake8-bugbear (`B`) violations.
+unfixable = ["B"]
